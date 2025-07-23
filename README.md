@@ -56,3 +56,7 @@ The `users.json` file contains sample user data in JSON format. Example:
   }
 ]
 ```
+
+## Environment Variables
+
+- `DANGEROUSLY_OMIT_AUTH`: Set this to `true` to bypass authentication during development. Use with caution.
