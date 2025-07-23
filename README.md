@@ -60,3 +60,28 @@ The `users.json` file contains sample user data in JSON format. Example:
 ## Environment Variables
 
 - `DANGEROUSLY_OMIT_AUTH`: Set this to `true` to bypass authentication during development. Use with caution.
+
+## Scripts
+
+- **`server:build`**: Compiles the TypeScript code.
+
+  ```bash
+  npm run server:build
+  ```
+
+- **`server:dev`**: Runs the server in development mode.
+
+  ```bash
+  npm run server:dev
+  ```
+
+- **`server:build:watch`**: Watches for changes and recompiles the TypeScript code.
+
+  ```bash
+  npm run server:build:watch
+  ```
+
+- **`server:inspect`**: Runs the server with the inspector enabled and bypasses authentication (use with caution).
+  ```bash
+  npm run server:inspect
+  ```
