@@ -3,8 +3,9 @@ import {
   ResourceTemplate,
 } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import z from "zod";
+import { CreateMessageResultSchema } from "@modelcontextprotocol/sdk/types.js";
 import fs from "node:fs/promises";
+import z from "zod";
 
 const server = new McpServer({
   name: "Test",
@@ -120,6 +121,90 @@ server.tool(
             text: `Failed to save user ${
               error instanceof Error ? error.message : "unknown error"
             }`,
+          },
+        ],
+      };
+    }
+  },
+);
+
+server.tool(
+  "create-random-user",
+  "Create a random user profile",
+  {
+    title: "Create Random User",
+    readOnlyHint: false,
+    destructiveHint: false,
+    idempotentHint: false,
+    openWorldHint: true,
+  },
+  async () => {
+    const res = await server.server.request(
+      {
+        method: "sampling/createMessage",
+        params: {
+          messages: [
+            {
+              role: "user",
+              content: {
+                type: "text",
+                text: "Generate a fake user data. The user should have a realistic name, email, address, and phone number. Return this data as a JSON object with no other text or formatter so it can be use in JSON.parse.",
+              },
+            },
+          ],
+          maxTokens: 2048,
+        },
+      },
+      CreateMessageResultSchema,
+    );
+
+    if (res.content.type !== "text" || res.content.text.trim() === "") {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Failed to generate random user profile. Content is not text. Received: ${JSON.stringify(
+              res,
+              null,
+              2,
+            )}`,
+          },
+        ],
+      };
+    }
+
+    try {
+      const fakeUser = JSON.parse(
+        res.content.text
+          .trim()
+          .replace(/^```json/, "")
+          .replace(/```$/, "")
+          .trim(),
+      );
+
+      const id = await createUser(fakeUser);
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Random user created with ID: ${id}. Profile: ${JSON.stringify(
+              fakeUser,
+              null,
+              2,
+            )}`,
+          },
+        ],
+      };
+    } catch (error) {
+      console.log({ error });
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Failed to parse random user profile: ${
+              error instanceof Error ? error.message : "unknown error"
+            }. Content Text: ${res.content.text}`,
           },
         ],
       };
