@@ -127,6 +127,27 @@ server.tool(
   },
 );
 
+server.prompt(
+  "generate-fake-user",
+  "Generate a fake user profile",
+  {
+    name: z.string(),
+  },
+  ({ name }) => {
+    return {
+      messages: [
+        {
+          role: "user",
+          content: {
+            type: "text",
+            text: `Generate a fake user profile for ${name}. The profile should include a name, email, address, and phone number.`,
+          },
+        },
+      ],
+    };
+  },
+);
+
 async function createUser(user: {
   name: string;
   email: string;
