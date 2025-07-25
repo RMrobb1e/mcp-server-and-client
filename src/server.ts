@@ -90,7 +90,7 @@ server.tool(
   "Create a new user in the database",
   {
     name: z.string(),
-    email: z.string().email(),
+    email: z.string(),
     address: z.string(),
     phone: z.string(),
   },

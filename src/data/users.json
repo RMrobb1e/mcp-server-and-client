@@ -26,5 +26,25 @@
     "email": "robbie@example.com",
     "address": "Test Address",
     "phone": "123-456-7890"
+  },
+  {
+    "id": 5,
+    "name": "name",
+    "email": "name@ezaasda.aa",
+    "address": "123",
+    "phone": "12"
+  },
+  {
+    "id": 6,
+    "firstName": "Eleanor",
+    "lastName": "Vance",
+    "email": "eleanor.vance78@example.com",
+    "address": {
+      "street": "456 Oak Avenue",
+      "city": "Springfield",
+      "state": "IL",
+      "zipCode": "62704"
+    },
+    "phoneNumber": "217-555-9876"
   }
 ]
